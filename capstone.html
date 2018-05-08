@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8' />
+  <title>Yelp and our Built Environment</title>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.css' rel='stylesheet' />
+  <link href='./styles_copy.css' rel='stylesheet'/>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container-fluid" style="padding:0px;">
+    <div class="row" style="width:100%;">
+      <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xl-10" style="height:100%;">
+        <div id="map"></div>
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
+          <div class="container-fluid">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+              <nav id="menu"></nav>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+              <nav id="menu2"></nav>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+              <nav id="menu3"></nav>
+            </div>
+          </div>
+        </div>
+        <div class="hidden-xs hidden-sm col-md-2 col-lg-2 col-xl-2 col-md-offset-6 col-lg-offset-6 col-xl-offset-6">
+          <div class='filter-ctrl'>
+            <input id='filter-input' type='text' name='filter' placeholder='Search' />
+          </div>
+        </div>
+      </div>
+      <div class="hidden-xs hidden-sm col-md-2 col-lg-2 col-xl-2" style="padding-right:0px;">
+        <div class='map-overlay'>
+
+
+          <div class="container" style="max-width:100%;">
+            <h2>Legend</h2>
+            <h4 style="padding-top:10px;">Yelp Data</h4>
+            <div class="row">
+              <div id="legend" class="col-md-2 col-lg-2 col-xl-2">
+                <img id="legend-img" class="img-responsive" src="./links/yelp-01.png">
+              </div>
+              <div id="legend" class="col-md-10 col-lg-10 col-xl-10">
+                <p style="padding:0px; margin:0px;"><strong>Reviews</strong></p>
+                <small><i>Number of Reviews</i></small>
+              </div>
+            </div>
+            <div class="row">
+              <div id="legend" class="col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                <img id="legend-img" class="img-responsive" src="./links/yelp-02.png">
+              </div>
+              <div id="legend" class="col-sm-10 col-md-10 col-lg-10 col-xl-10">
+                <p style="padding:0px; margin:0px;"><strong>Ratings</strong></p>
+                <small><i>Yelp star rating 1-5</i></small>
+              </div>
+            </div>
+          </div>
+
+          <div class="container" style="max-width:100%;">
+            <h4 style="padding-top:10px;">Keyword Mentions</h4>
+            <div class="row">
+              <div id="legend" class="col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                <img id="legend-img" class="img-responsive" src="./links/blue.png" style="margin-top:8px;">
+              </div>
+              <div id="legend" class="col-sm-10 col-md-10 col-lg-10 col-xl-10">
+                <p id="special"><strong>Positive</strong> (Hipster, Cozy, Friendly)</p>
+              </div>
+            </div>
+            <div class="row">
+              <div id="legend" class="col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                <img id="legend-img" class="img-responsive" src="./links/red.png">
+              </div>
+              <div id="legend" class="col-sm-10 col-md-10 col-lg-10 col-xl-10">
+                <p style="padding:0px; margin:0px;"><strong>Negative</strong> (Sketchy, Rude)</p>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="container" style="max-width:100%;">
+            <h4 style="padding-top:20px; padding-bottom:0px; line-height:0px;">Census Data</h4>
+            <small><i>Data from PolicyMap.com</i></small>
+
+            <p style="padding-top:10px;"><strong>% White Population (2010)</strong></p>
+            <div class="row">
+              <div id="legend" class="col-md-2 col-lg-2 col-xl-2">
+                <img id="legend-img" class="img-responsive" src="./links/census-05.png">
+              </div>
+              <div id="legend" class="col-md-10 col-lg-10 col-xl-10">
+                <small>69.89% or less</small>
+              </div>
+            </div>
+            <div class="row">
+              <div id="legend" class="col-md-2 col-lg-2 col-xl-2">
+                <img id="legend-img" class="img-responsive" src="./links/census-04.png">
+              </div>
+              <div id="legend" class="col-md-10 col-lg-10 col-xl-10">
+                <small>69.90% - 82.99%</small>
+              </div>
+            </div>
+            <div class="row">
+              <div id="legend" class="col-md-2 col-lg-2 col-xl-2">
+                <img id="legend-img" class="img-responsive" src="./links/census-03.png">
+              </div>
+              <div id="legend" class="col-md-10 col-lg-10 col-xl-10">
+                <small>83.00% - 97.11%</small>
+              </div>
+            </div>
+            <div class="row">
+              <div id="legend" class="col-md-2 col-lg-2 col-xl-2">
+                <img id="legend-img" class="img-responsive" src="./links/census-02.png">
+              </div>
+              <div id="legend" class="col-md-10 col-lg-10 col-xl-10">
+                <small>97.12% or more</small>
+              </div>
+            </div>
+
+            <p id="special" style="padding-top:10px;"><strong>Income Levels Per Capita (2012-2016)</strong></p>
+            <div class="row">
+              <div id="legend" class="col-md-2 col-lg-2 col-xl-2">
+                <img id="legend-img" class="img-responsive" src="./links/census-05.png">
+              </div>
+              <div id="legend" class="col-md-10 col-lg-10 col-xl-10">
+                <small>$19,499 or less</small>
+              </div>
+            </div>
+            <div class="row">
+              <div id="legend" class="col-md-2 col-lg-2 col-xl-2">
+                <img id="legend-img" class="img-responsive" src="./links/census-04.png">
+              </div>
+              <div id="legend" class="col-md-10 col-lg-10 col-xl-10">
+                <small>$19,500 - $25,999</small>
+              </div>
+            </div>
+            <div class="row">
+              <div id="legend" class="col-md-2 col-lg-2 col-xl-2">
+                <img id="legend-img" class="img-responsive" src="./links/census-03.png">
+              </div>
+              <div id="legend" class="col-md-10 col-lg-10 col-xl-10">
+                <small>$26,000 - $33,499</small>
+              </div>
+            </div>
+            <div class="row">
+              <div id="legend" class="col-md-2 col-lg-2 col-xl-2">
+                <img id="legend-img" class="img-responsive" src="./links/census-02.png">
+              </div>
+              <div id="legend" class="col-md-10 col-lg-10 col-xl-10">
+                <small>$33,500 or more</small>
+              </div>
+            </div>
+
+
+            <p style="margin-top:20px;"><strong>Food Access (2015)</strong></p>
+            <div class="row">
+              <div id="legend" class="col-md-2 col-lg-2 col-xl-2">
+                <img id="legend-img" class="img-responsive" src="./links/census-01.png">
+              </div>
+              <div id="legend" class="col-md-10 col-lg-10 col-xl-10">
+                <small>Low Income and Low Access</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src='data.js'></script>
+</body>
+</html>
